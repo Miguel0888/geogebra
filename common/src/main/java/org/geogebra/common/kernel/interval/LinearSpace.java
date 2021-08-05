@@ -75,16 +75,18 @@ public class LinearSpace {
 		LinearSpace result = new LinearSpace();
 		double t = getLastValue();
 		result.values.add(getLastValue());
-		while (t < max) {
-			t += step;
-			values.add(t);
-			result.values.add(t);
+		if (step > 0) {
+			while (t < max) {
+				t += step;
+				values.add(t);
+				result.values.add(t);
+			}
 		}
 		return result;
 	}
 
 	private double getLastValue() {
-		return values.get(size() - 1);
+		return values.isEmpty() ? 0 : values.get(size() - 1);
 	}
 
 	private int size() {
@@ -101,10 +103,12 @@ public class LinearSpace {
 		LinearSpace result = new LinearSpace();
 		result.values.add(getFirstValue());
 		double t = getFirstValue();
-		while (min < t) {
-			t -= step;
-			result.values.add(0, t);
-			values.add(0, t);
+		if (step > 0) {
+			while (min < t) {
+				t -= step;
+				result.values.add(0, t);
+				values.add(0, t);
+			}
 		}
 		return result;
 	}
