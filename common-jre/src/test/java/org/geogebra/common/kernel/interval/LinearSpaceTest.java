@@ -46,4 +46,10 @@ public class LinearSpaceTest extends BaseUnitTest {
 		space.extendMin(-1.4);
 		assertEquals(expected.values(), space.values());
 	}
+
+	@Test
+	public void testLinearSpaceExtendMaxDoesNotCrash() {
+		LinearSpace space = new LinearSpace();
+		space.extendMax(3);
+	}
 }
