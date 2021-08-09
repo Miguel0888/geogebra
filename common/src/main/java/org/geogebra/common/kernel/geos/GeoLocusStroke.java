@@ -707,8 +707,15 @@ public class GeoLocusStroke extends GeoLocus
 	}
 
 	private void addBezierCurveWithControlPoints(List<MyPoint> stroke, int start, int length) {
-		ArrayList<double[]> controlPoints = getControlPoints(stroke, start, length);
-		for (int i = 1; i < length; i++) {
+		List<MyPoint> strokeMaybeAveraged;
+		if (length > 9) {
+			strokeMaybeAveraged = averageClosePoints(stroke, start, length);
+		} else {
+			strokeMaybeAveraged = stroke.subList(start, start + length);
+		}
+		ArrayList<double[]> controlPoints =
+				getControlPoints(strokeMaybeAveraged, 0, strokeMaybeAveraged.size());
+		for (int i = 1; i < strokeMaybeAveraged.size(); i++) {
 			MyPoint ctrl1 = new MyPoint(controlPoints.get(0)[i - 1],
 					controlPoints.get(1)[i - 1],
 					SegmentType.CONTROL);
@@ -716,8 +723,8 @@ public class GeoLocusStroke extends GeoLocus
 					controlPoints.get(3)[i - 1],
 					SegmentType.CONTROL);
 
-			MyPoint startPoint = stroke.get(start + i - 1);
-			MyPoint endPoint = stroke.get(start + i);
+			MyPoint startPoint = strokeMaybeAveraged.get(i - 1);
+			MyPoint endPoint = strokeMaybeAveraged.get(i);
 
 			if (angle(startPoint, ctrl1, endPoint) > MIN_CURVE_ANGLE
 					|| angle(startPoint, ctrl2, endPoint) > MIN_CURVE_ANGLE) {
@@ -728,6 +735,66 @@ public class GeoLocusStroke extends GeoLocus
 				addPointLineTo(endPoint);
 			}
 		}
+	}
+
+	private List<MyPoint> averageClosePoints(List<MyPoint> stroke, int start, int length) {
+		ArrayList<MyPoint> averagedPoints = new ArrayList<>();
+		//do not use first point for averaging
+		averagedPoints.add(stroke.get(start));
+		int end = start + length;
+		int i = start + 1;
+		while (i < end) {
+			if (i < end - 2) {
+				ArrayList<MyPoint> pointsToAverage = new ArrayList<>();
+				pointsToAverage.add(stroke.get(i));
+				for (int j = i + 1; j < end - 1; j++) { //do not use last point for averaging
+					boolean isMaxNumberOfPoints = false;
+					if (pointsToAverage.size() >= 2 || j == end - 2) {
+						isMaxNumberOfPoints = true;
+					}
+					if (!isMaxNumberOfPoints
+							&& areClosePoints(stroke.get(i), stroke.get(j))) {
+						pointsToAverage.add(stroke.get(j));
+						i++;
+					} else {
+						if (pointsToAverage.size() == 1) {
+							averagedPoints.add(stroke.get(i));
+						} else {
+							averagedPoints.add(calculateAveragePoint(pointsToAverage));
+						}
+						break;
+					}
+				}
+			} else {
+				averagedPoints.add(stroke.get(i));
+			}
+			i++;
+		}
+		return averagedPoints;
+	}
+
+	private boolean areClosePoints(MyPoint a, MyPoint b) {
+		EuclidianView view = app.getActiveEuclidianView();
+		double screenCoordXA = view.toScreenCoordXd(a.getX());
+		double screenCoordYA = view.toScreenCoordYd(a.getY());
+		double screenCoordXB = view.toScreenCoordXd(b.getX());
+		double screenCoordYB = view.toScreenCoordYd(b.getY());
+
+		return Math.abs((screenCoordXA - screenCoordXB)) < 4
+				&& Math.abs((screenCoordYA - screenCoordYB)) < 4;
+	}
+
+	private MyPoint calculateAveragePoint(List<MyPoint> points) {
+		double newX = 0;
+		double newY = 0;
+		for (MyPoint p : points) {
+			newX += p.getX();
+			newY += p.getY();
+		}
+		newX /= points.size();
+		newY /= points.size();
+
+		return new MyPoint(newX, newY, SegmentType.LINE_TO);
 	}
 
 	private void addPointMoveTo(MyPoint point) {
