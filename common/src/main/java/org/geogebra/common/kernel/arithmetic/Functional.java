@@ -24,16 +24,16 @@ public interface Functional extends Evaluatable {
 	 * 
 	 * @return function
 	 */
-	public Function getFunction();
+	Function getFunction();
 
 	/**
 	 * Returns the function
 	 * 
 	 * @return function
-	 * @deprecated use getFunction for gettting the expression
+	 * @deprecated use getFunction for getting the expression
 	 */
 	@Deprecated
-	public GeoFunction getGeoFunction();
+	GeoFunction getGeoFunction();
 
 	/**
 	 * Returns the function's derivative wrapped in GeoElement
@@ -44,6 +44,6 @@ public interface Functional extends Evaluatable {
 	 *            flag for derivative without CAS
 	 * @return wrapped derivative
 	 */
-	public GeoFunction getGeoDerivative(int order, boolean fast);
+	GeoFunction getGeoDerivative(int order, boolean fast);
 
 }

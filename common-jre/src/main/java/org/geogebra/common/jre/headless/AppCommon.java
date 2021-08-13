@@ -310,12 +310,7 @@ public class AppCommon extends App {
         return 0;
     }
 
-    @Override
-    public GFont getPlainFontCommon() {
-		return AwtFactory.getPrototype().newFont("serif", 0, 12);
-    }
-
-    @Override
+	@Override
     public GeoElementGraphicsAdapter newGeoElementGraphicsAdapter() {
 		return new GeoElementGraphicsAdapter() {
 

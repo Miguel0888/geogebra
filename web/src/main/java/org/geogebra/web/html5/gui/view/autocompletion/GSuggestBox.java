@@ -1028,23 +1028,6 @@ public class GSuggestBox extends Composite
 		this.limit = limit;
 	}
 
-	/**
-	 * Sets the style name of the suggestion popup in the
-	 * {@link DefaultSuggestionDisplay}. Note that this method is a no-op unless
-	 * the {@link DefaultSuggestionDisplay} is used.
-	 *
-	 * @param style
-	 *            the new primary style name
-	 * @see UIObject#setStyleName(String)
-	 * @deprecated use
-	 *             {@link DefaultSuggestionDisplay#setPopupStyleName(String)}
-	 *             instead
-	 */
-	@Deprecated
-	public void setPopupStyleName(String style) {
-		getSuggestionDisplay().setPopupStyleNameImpl(style);
-	}
-
 	@Override
 	public void setTabIndex(int index) {
 		box.setTabIndex(index);

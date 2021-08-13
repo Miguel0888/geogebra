@@ -1578,7 +1578,7 @@ public class GeoLine extends GeoVec3D implements Path, Translateable,
 
 	@Override
 	public GeoFunction getGeoDerivative(int order, boolean fast) {
-		return getGeoFunction().getGeoDerivative(order, fast);
+		return getFunction().getGeoDerivative(order, fast);
 	}
 
 	@Override

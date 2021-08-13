@@ -81,7 +81,10 @@ public final class DrawText extends Drawable {
 		this.text = text;
 		geo = text;
 
-		textFont = view.getApplication().getPlainFontCommon()
+		textFont = view
+				.getApplication()
+				.getFontCreator()
+				.newSansSerifFont()
 				.deriveFont(GFont.PLAIN, view.getFontSize());
 
 		// this is needed as (bold) LaTeX texts are created with isLaTeX = false

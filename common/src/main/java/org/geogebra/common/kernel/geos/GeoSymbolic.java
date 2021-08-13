@@ -630,7 +630,7 @@ public class GeoSymbolic extends GeoElement
 
 	@Override
 	public GeoFunction getGeoDerivative(int order, boolean fast) {
-		return getGeoFunction().getGeoDerivative(order, fast);
+		return getFunction().getGeoDerivative(order, fast);
 	}
 
 	@Override

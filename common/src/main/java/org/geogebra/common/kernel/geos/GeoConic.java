@@ -685,7 +685,7 @@ public class GeoConic extends GeoConicND implements ConicMirrorable,
 
 	@Override
 	public GeoFunction getGeoDerivative(int order, boolean fast) {
-		return getGeoFunction().getGeoDerivative(order, fast);
+		return getFunction().getGeoDerivative(order, fast);
 	}
 
 	@Override

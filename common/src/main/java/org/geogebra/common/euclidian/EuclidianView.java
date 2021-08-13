@@ -2559,7 +2559,7 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 	 */
 	public GFont getFontPoint() {
 		if (fontPoint == null) {
-			return app.getPlainFontCommon();
+			return app.getFontCreator().newSansSerifFont();
 		}
 		return fontPoint;
 	}
@@ -3525,7 +3525,7 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 	public void updateFonts() {
 		setFontSize(getApplication().getFontSize());
 
-		setFontPoint(getApplication().getPlainFontCommon().deriveFont(
+		setFontPoint(getApplication().getFontCreator().newSansSerifFont().deriveFont(
 				GFont.PLAIN, getFontSize()));
 
 		if (getSettings() != null) {
