@@ -2,10 +2,12 @@ package org.geogebra.web.html5.util;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 import elemental2.dom.EventListener;
 import elemental2.dom.EventTarget;
+import jsinterop.base.Js;
 
 public class GlobalHandlerRegistry {
 	private final ArrayList<HandlerRegistration> handlers = new ArrayList<>();
@@ -26,6 +28,17 @@ public class GlobalHandlerRegistry {
 	public void addEventListener(EventTarget target, String type, EventListener listener) {
 		target.addEventListener(type, listener, false);
 		add(() -> target.removeEventListener(type, listener));
+	}
+
+	/**
+	 * Use JS addEventListener directly to add a listener
+	 * @param target event target
+	 * @param type event type
+	 * @param listener listener
+	 */
+	public void addEventListener(JavaScriptObject target, String type, EventListener listener) {
+		EventTarget el = Js.uncheckedCast(target);
+		addEventListener(el, type, listener);
 	}
 
 	/**

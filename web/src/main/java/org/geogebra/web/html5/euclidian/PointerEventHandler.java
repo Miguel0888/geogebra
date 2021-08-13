@@ -231,16 +231,17 @@ public class PointerEventHandler {
 	 */
 	public void attachTo(Element element, GlobalHandlerRegistry globalHandlers) {
 		reset();
-		Dom.addEventListener(element, "pointermove",
+		// some handlers are stuck in memory for whatever reason
+		globalHandlers.addEventListener(element, "pointermove",
 				evt -> onPointerMove(Js.uncheckedCast(evt)));
 
-		Dom.addEventListener(element, "pointerdown",
+		globalHandlers.addEventListener(element, "pointerdown",
 				evt -> onPointerDown(Js.uncheckedCast(evt), element));
 
-		Dom.addEventListener(element, "pointerout",
+		globalHandlers.addEventListener(element, "pointerout",
 				evt -> onPointerOut(Js.uncheckedCast(evt)));
 
-		Dom.addEventListener(element, "pointercanel",
+		globalHandlers.addEventListener(element, "pointercanel",
 				evt -> onPointerOut(Js.uncheckedCast(evt)));
 
 		EventListener clickOutsideHandler = evt -> onPointerUp(Js.uncheckedCast(evt), element);

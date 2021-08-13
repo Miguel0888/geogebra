@@ -16,6 +16,7 @@ import org.geogebra.web.html5.util.LoadFilePresenter;
 import org.geogebra.web.html5.util.StringConsumer;
 import org.geogebra.web.html5.util.ViewW;
 import org.geogebra.web.html5.util.debug.LoggerW;
+import org.geogebra.web.html5.util.keyboard.KeyboardManagerInterface;
 import org.geogebra.web.resources.StyleInjector;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -103,15 +104,10 @@ public abstract class GeoGebraFrameW extends FlowPanel implements
 		}
 	}
 
-	private native void addFocusHandlers(Element e) /*-{
-		var that = this;
-		e.addEventListener('focusin', function() {
-			that.@org.geogebra.web.html5.gui.GeoGebraFrameW::useFocusedBorder()();
-		});
-		e.addEventListener('focusout', function() {
-			that.@org.geogebra.web.html5.gui.GeoGebraFrameW::useDataParamBorder()();
-		});
-	}-*/;
+	private void addFocusHandlers(Element e) {
+		Dom.addEventListener(e, "focusin", evt -> useFocusedBorder());
+		Dom.addEventListener(e, "focusout", evt -> useDataParamBorder());
+	}
 
 	/**
 	 * The application loading continues in the splashDialog onLoad handler
@@ -663,7 +659,12 @@ public abstract class GeoGebraFrameW extends FlowPanel implements
 				null);
 		geoGebraElement = null;
 		app.getGlobalHandlers().removeAllListeners();
+		KeyboardManagerInterface km = app.getKeyboardManager();
+		if (km != null) {
+			km.removeFromDom();
+		}
 		app = null;
+
 		if (GeoGebraFrameW.getInstanceCount() == 0) {
 			ResourcesInjector.removeResources();
 		}

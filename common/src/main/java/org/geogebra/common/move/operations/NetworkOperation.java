@@ -18,8 +18,8 @@ public class NetworkOperation extends BaseOperation<BooleanRenderable> {
 	 * @param network
 	 *            The implementation of the Network interface
 	 */
-	public NetworkOperation(Network network) {
-		this.online = network.onLine();
+	public NetworkOperation(boolean online) {
+		this.online = online;
 	}
 
 	/**

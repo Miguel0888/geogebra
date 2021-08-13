@@ -8,19 +8,17 @@ import org.geogebra.web.html5.util.Persistable;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 
+import elemental2.dom.DomGlobal;
+
 /**
  * Base dialog material design component
  */
-public class ComponentDialog extends GPopupPanel implements Persistable, ResizeHandler {
-	private Label title;
+public class ComponentDialog extends GPopupPanel implements Persistable {
 	private FlowPanel dialogContent;
 	private Runnable positiveAction;
 	private Runnable negativeAction;
@@ -41,7 +39,7 @@ public class ComponentDialog extends GPopupPanel implements Persistable, ResizeH
 		setGlassEnabled(hasScrim);
 		this.setStyleName("dialogComponent");
 		buildDialog(dialogData);
-		Window.addResizeHandler(this);
+		app.getGlobalHandlers().addEventListener(DomGlobal.window, "resize", e -> onResize());
 	}
 
 	private void  buildDialog(DialogData dialogData) {
@@ -63,7 +61,7 @@ public class ComponentDialog extends GPopupPanel implements Persistable, ResizeH
 			return;
 		}
 
-		title = new Label(getApplication().getLocalization().getMenu(titleTransKey));
+		Label title = new Label(getApplication().getLocalization().getMenu(titleTransKey));
 		title.setStyleName("dialogTitle");
 		dialogMainPanel.add(title);
 	}
@@ -205,8 +203,7 @@ public class ComponentDialog extends GPopupPanel implements Persistable, ResizeH
 		});
 	}
 
-	@Override
-	public void onResize(ResizeEvent resizeEvent) {
+	public void onResize() {
 		if (isShowing()) {
 			super.centerAndResize(((AppW) app).getAppletFrame().getKeyboardHeight());
 		}
