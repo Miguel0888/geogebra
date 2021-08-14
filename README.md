@@ -1,7 +1,7 @@
-# Welcome to GeoGebra!
+# Welcome to GeoZebra!
 
 
-The primary site for [GeoGebra](https://www.geogebra.org)'s source code is
+The primary site for [GeoZebra](https://www.geozebra.org)'s source code is
 https://dev.geogebra.org/svn/trunk/geogebra/ which
 is a read-only Subversion repository. We maintain a copy of it
 at https://github.com/geogebra/geogebra.
